@@ -265,24 +265,22 @@ def process_supabase_sync(supabase: Client, records: list[dict], previous: list[
         else:
             unchanged_ps.append(r)
 
-    print(f"\n   📋 Diff against previous snapshot:")
-    print(f"      🆕 New PS:      {len(new_ps)}")
-    print(f"      📈 Changed:     {len(changed_ps)}")
-    print(f"      ─  Unchanged:   {len(unchanged_ps)}")
+    print(f"\n   [INFO] Diff against previous snapshot:")
+    print(f"      [NEW] New PS:      {len(new_ps)}")
+    print(f"      [UPD] Changed:     {len(changed_ps)}")
+    print(f"      [-]  Unchanged:   {len(unchanged_ps)}")
 
     if not supabase:
-        print("\n   🏁 No Supabase client initialized. Skipping database sync.")
+        print("\n   [WARN] No Supabase client initialized. Skipping database sync.")
         return
 
     # 1. Upsert Problem Statements
-    print("\n   💾 Syncing problem_statements to Supabase...")
+    print("\n   [INFO] Syncing problem_statements to Supabase...")
     try:
-        # Supabase Python client currently requires passing data as a list for bulk upserts.
-        # Chunking might be necessary if payload is huge, but 230 rows is fine.
         supabase.table("problem_statements").upsert(upsert_payload).execute()
-        print(f"      ✓ Upserted {len(upsert_payload)} records")
+        print(f"      [OK] Upserted {len(upsert_payload)} records")
     except Exception as e:
-        print(f"      ✗ Error upserting problem statements: {e}")
+        print(f"      [FAIL] Error upserting problem statements: {e}")
 
     # 2. Insert History Logs
     history_payload = []
@@ -307,12 +305,12 @@ def process_supabase_sync(supabase: Client, records: list[dict], previous: list[
         })
 
     if history_payload:
-        print(f"   💾 Inserting {len(history_payload)} history logs...")
+        print(f"   [INFO] Inserting {len(history_payload)} history logs...")
         try:
             supabase.table("history_log").insert(history_payload).execute()
-            print("      ✓ History logs inserted")
+            print("      [OK] History logs inserted")
         except Exception as e:
-            print(f"      ✗ Error inserting history logs: {e}")
+            print(f"      [FAIL] Error inserting history logs: {e}")
 
 
 # ── Main ───────────────────────────────────────────────────────────────────
@@ -327,23 +325,23 @@ def main():
     args = parser.parse_args()
 
     now = datetime.now(IST)
-    print(f"🕐 Niche SIH Scraper — {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
+    print(f"[INFO] Niche SIH Scraper - {now.strftime('%Y-%m-%d %H:%M:%S %Z')}")
 
     # Initialize Supabase
     supabase = None
     if SUPABASE_URL and SUPABASE_KEY and not args.dry_run:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
     
-    print("   🌐 Fetching live page...")
+    print("   [INFO] Fetching live page...")
     html_text = fetch_html(URL)
-    print(f"   📄 Got {len(html_text):,} bytes of HTML")
+    print(f"   [INFO] Got {len(html_text):,} bytes of HTML")
 
-    print("   🔍 Parsing problem statements table...")
+    print("   [INFO] Parsing problem statements table...")
     records = parse_ps_table(html_text)
-    print(f"   ✓ Found {len(records)} problem statements")
+    print(f"   [OK] Found {len(records)} problem statements")
 
     if len(records) < MIN_RECORDS:
-        print(f"   ✗ FAIL: Expected at least {MIN_RECORDS} records, "
+        print(f"   [FAIL] Expected at least {MIN_RECORDS} records, "
               f"got {len(records)}. Aborting to avoid data loss.")
         sys.exit(1)
 
@@ -352,7 +350,7 @@ def main():
         previous = load_previous_state(supabase)
 
     process_supabase_sync(supabase, records, previous, now)
-    print(f"\n   🏁 Done!")
+    print(f"\n   [OK] Done!")
 
 
 if __name__ == "__main__":
