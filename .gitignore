@@ -1,32 +1,70 @@
-# Python
-__pycache__/
-*.py[cod]
-*.egg-info/
-.venv/
-venv/
-
-# Debug artifacts (don't commit raw HTML dumps)
-data/debug_page.html
-data/debug_*.html
-
-# Environment files (none exist yet, but just in case)
+# Environment Variables
 .env
 .env.*
 !.env.example
 
-# Node (for the frontend, added later)
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env_venv/
+
+# Node / React Frontend
 node_modules/
 dist/
 .cache/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
 
-# OS
+# Scraper Debug Artifacts
+data/debug_page.html
+data/debug_*.html
+
+# OS Files
 .DS_Store
-Thumbs.db
-Desktop.ini
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
 
-# IDE
+# IDEs
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
+
+# Assets
+fonts/
+
+# Database Schema
+query.sql

@@ -1,0 +1,118 @@
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/MinecraftRegular-Bmg3.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/MinecraftBold-nMK1.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/MinecraftItalic-R8Mo.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face {
+  font-family: 'Minecraft';
+  src: url('/fonts/MinecraftBoldItalic-1y1e.otf') format('opentype');
+  font-weight: bold;
+  font-style: italic;
+}
+
+:root {
+  /* Light Mode Variables */
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --border-color: #000000;
+  --accent-color: #000000;
+  --shadow-color: #000000;
+  --hover-bg: #f0f0f0;
+}
+
+[data-theme='dark'] {
+  /* Dark Mode Variables */
+  --bg-color: #000000;
+  --text-color: #ffffff;
+  --border-color: #ffffff;
+  --accent-color: #ffffff;
+  --shadow-color: #ffffff;
+  --hover-bg: #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Minecraft', monospace;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background-color 0s, color 0s; /* No smooth transition for brutalist feel */
+  line-height: 1.5;
+  -webkit-font-smoothing: none; /* Keeps the pixel font crisp */
+}
+
+/* Required for the View Transitions API theme toggle */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+/* Base Brutalist Component Styles */
+.brutalist-container {
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+}
+
+.brutalist-shadow {
+  box-shadow: 4px 4px 0px 0px var(--shadow-color);
+}
+
+.brutalist-shadow-hover:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0px 0px var(--shadow-color);
+}
+
+.brutalist-button {
+  background: var(--bg-color);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+  padding: 0.5rem 1rem;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+
+.brutalist-button:hover {
+  background: var(--text-color);
+  color: var(--bg-color);
+}
+
+/* Layout Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+}
