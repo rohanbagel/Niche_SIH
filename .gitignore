@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Debug artifacts (don't commit raw HTML dumps)
+data/debug_page.html
+data/debug_*.html
+
+# Environment files (none exist yet, but just in case)
+.env
+.env.*
+!.env.example
+
+# Node (for the frontend, added later)
+node_modules/
+dist/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

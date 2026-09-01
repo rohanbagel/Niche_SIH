@@ -1,0 +1,84 @@
+name: Scrape SIH 2026 PS
+
+on:
+  schedule:
+    # Every 15 minutes — reliable on GitHub Actions (*/5 is platform min but
+    # frequently delayed under load). Tighten to */10 closer to deadline.
+    - cron: "*/15 * * * *"
+  workflow_dispatch:  # Allow manual trigger from GitHub UI
+
+permissions:
+  contents: write
+
+concurrency:
+  group: scrape-sih
+  cancel-in-progress: false  # Don't cancel in-flight scrapes
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r scripts/requirements.txt
+
+      - name: Run scraper
+        id: scrape
+        run: |
+          set +e
+          python scripts/scrape.py
+          code=$?
+          if [ $code -ne 0 ]; then
+            echo "scrape_failed=true" >> "$GITHUB_OUTPUT"
+            echo "::warning::Scraper failed with exit code $code — likely transient network issue, will retry on next schedule."
+            exit 0
+          fi
+          echo "scrape_failed=false" >> "$GITHUB_OUTPUT"
+
+      - name: Check for changes
+        if: steps.scrape.outputs.scrape_failed != 'true'
+        id: diff
+        run: |
+          git add data/
+          if git diff --cached --quiet; then
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No data changes detected — skipping commit."
+          else
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Data changes detected — will commit."
+          fi
+
+      - name: Commit and push
+        if: steps.diff.outputs.has_changes == 'true'
+        run: |
+          git config user.name "niche-bot"
+          git config user.email "niche-bot@users.noreply.github.com"
+          
+          TIMESTAMP=$(TZ='Asia/Kolkata' date '+%Y-%m-%d %H:%M IST')
+          
+          # Count changes from scraper output
+          NEW_COUNT="${{ steps.scrape.outputs.new_count || '0' }}"
+          CHANGED_COUNT="${{ steps.scrape.outputs.changed_count || '0' }}"
+          RECORD_COUNT="${{ steps.scrape.outputs.record_count || '?' }}"
+          
+          COMMIT_MSG="data: scrape ${TIMESTAMP} (${RECORD_COUNT} PS"
+          if [ "$NEW_COUNT" != "0" ]; then
+            COMMIT_MSG="${COMMIT_MSG}, ${NEW_COUNT} new"
+          fi
+          if [ "$CHANGED_COUNT" != "0" ]; then
+            COMMIT_MSG="${COMMIT_MSG}, ${CHANGED_COUNT} changed"
+          fi
+          COMMIT_MSG="${COMMIT_MSG})"
+          
+          git add data/
+          git commit -m "$COMMIT_MSG"
+          git push
