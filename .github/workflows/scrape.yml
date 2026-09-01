@@ -1,8 +1,8 @@
 name: Scrape SIH 2026 PS
 
 on:
-  schedule:
-    - cron: "*/15 * * * *"
+  # schedule:
+  #   - cron: "*/15 * * * *"
   workflow_dispatch:
 
 concurrency:

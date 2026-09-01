@@ -68,3 +68,7 @@ fonts/
 
 # Database Schema
 query.sql
+
+# Cookies & Temp files
+*cookies.txt
+*.txt
