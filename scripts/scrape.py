@@ -13,16 +13,16 @@ Uses curl subprocess for TLS fingerprint compatibility with Azure WAF.
 
 import os
 import re
-import subprocess
 import sys
 import time
 from datetime import datetime, timezone, timedelta
 
 try:
     from bs4 import BeautifulSoup
+    from curl_cffi import requests as cffi_requests
     from supabase import create_client, Client
 except ImportError:
-    sys.exit("dependencies missing: pip install beautifulsoup4 lxml supabase")
+    sys.exit("dependencies missing: pip install beautifulsoup4 lxml supabase curl_cffi")
 
 # ── Configuration ──────────────────────────────────────────────────────────
 
@@ -34,7 +34,7 @@ SUPABASE_URL = os.environ.get("SUPABASE_URL")
 SUPABASE_KEY = os.environ.get("SUPABASE_SERVICE_ROLE_KEY")
 
 if not SUPABASE_URL or not SUPABASE_KEY:
-    print("⚠ SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set. Operating in dry-run mode.")
+    print("[WARN] SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY not set. Operating in dry-run mode.")
 
 # ── Mojibake fix table ─────────────────────────────────────────────────────
 
@@ -72,48 +72,41 @@ def fix_text(text: str) -> str:
 # ── Fetching ───────────────────────────────────────────────────────────────
 
 def fetch_html(url: str, max_attempts: int = 5) -> str:
-    """Fetch HTML using curl with browser-like TLS fingerprint."""
-    cmd = [
-        "curl", "-sS", "-L",
-        "--max-time", "90",
-        "--compressed",
-        "-H", "User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-              "AppleWebKit/537.36 (KHTML, like Gecko) "
-              "Chrome/126.0.0.0 Safari/537.36",
-        "-H", "Accept: text/html,application/xhtml+xml,application/xml;"
-              "q=0.9,image/avif,image/webp,*/*;q=0.8",
-        "-H", "Accept-Language: en-US,en;q=0.9",
-        "-H", "Referer: https://sih.gov.in/",
-        "-H", "Sec-Fetch-Dest: document",
-        "-H", "Sec-Fetch-Mode: navigate",
-        "-H", "Sec-Fetch-Site: same-origin",
-        "-H", 'Sec-Ch-Ua: "Chromium";v="126", "Google Chrome";v="126", '
-              '"Not.A/Brand";v="99"',
-        "-H", "Sec-Ch-Ua-Mobile: ?0",
-        "-H", 'Sec-Ch-Ua-Platform: "Windows"',
-        url,
-    ]
-
+    """Fetch HTML using curl_cffi with authentic Chrome TLS/JA3 fingerprint and session management."""
     last_err = None
+
     for attempt in range(max_attempts):
         try:
-            result = subprocess.run(
-                cmd, capture_output=True, timeout=120
-            )
-            if result.returncode != 0:
-                stderr = result.stderr.decode("utf-8", errors="replace").strip()
-                raise RuntimeError(
-                    f"curl exited {result.returncode}: {stderr}"
-                )
+            # Create a new session with authentic Chrome 124 TLS fingerprint
+            session = cffi_requests.Session(impersonate="chrome124")
 
-            html_text = result.stdout.decode("utf-8", errors="replace")
+            # 1. Warm-up session on the homepage to receive Azure session & affinity cookies
+            try:
+                session.get("https://sih.gov.in/", timeout=30)
+            except Exception as e:
+                print(f"   [WARN] Homepage session warmup: {e}")
+
+            # 2. Fetch the target problem statements page
+            headers = {
+                "Referer": "https://sih.gov.in/",
+                "Accept-Language": "en-US,en;q=0.9",
+                "Sec-Fetch-Dest": "document",
+                "Sec-Fetch-Mode": "navigate",
+                "Sec-Fetch-Site": "same-origin",
+            }
+            resp = session.get(url, headers=headers, timeout=90)
+
+            if resp.status_code == 403:
+                raise RuntimeError("Azure WAF 403 Forbidden challenge")
+            elif resp.status_code != 200:
+                raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:200]}")
+
+            html_text = resp.text
             if not html_text.strip():
                 raise RuntimeError("Empty response body")
 
             if "dataTablePS" not in html_text and "<table" not in html_text:
-                snippet = html_text[:300].replace("\n", " ")
-                print(f"  ⚠ Response missing expected table "
-                      f"(snippet: {snippet[:200]}...)")
+                raise RuntimeError("Response missing expected problem statements table")
 
             return html_text
 
@@ -121,12 +114,12 @@ def fetch_html(url: str, max_attempts: int = 5) -> str:
             last_err = e
             if attempt < max_attempts - 1:
                 wait = min(10 * (2 ** attempt), 60)
-                print(f"  ✗ Attempt {attempt + 1}/{max_attempts} failed "
-                      f"({e}); retrying in {wait}s")
+                print(f"   [RETRY] Attempt {attempt + 1}/{max_attempts} failed "
+                      f"({e}); retrying in {wait}s...")
                 time.sleep(wait)
             else:
-                print(f"  ✗ Attempt {attempt + 1}/{max_attempts} failed "
-                      f"({e}); no more retries")
+                print(f"   [FAIL] Attempt {attempt + 1}/{max_attempts} failed "
+                      f"({e}); no more retries.")
 
     raise RuntimeError(
         f"Could not fetch {url} after {max_attempts} attempts: {last_err}"
