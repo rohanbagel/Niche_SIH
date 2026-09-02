@@ -1,8 +1,8 @@
 name: Scrape SIH 2026 PS
 
 on:
-  # schedule:
-  #   - cron: "*/15 * * * *"
+  schedule:
+    - cron: "*/15 * * * *"
   workflow_dispatch:
 
 concurrency:
@@ -30,6 +30,8 @@ jobs:
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          CF_WORKER_URL: ${{ secrets.CF_WORKER_URL }}
+          CF_PROXY_SECRET: ${{ secrets.CF_PROXY_SECRET }}
           PYTHONIOENCODING: utf-8
         run: |
           python scripts/scrape.py

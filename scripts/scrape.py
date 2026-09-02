@@ -72,32 +72,44 @@ def fix_text(text: str) -> str:
 # ── Fetching ───────────────────────────────────────────────────────────────
 
 def fetch_html(url: str, max_attempts: int = 5) -> str:
-    """Fetch HTML using curl_cffi with authentic Chrome TLS/JA3 fingerprint and session management."""
+    """Fetch HTML via Cloudflare Worker proxy (GitHub Actions) or direct curl_cffi (local)."""
+    worker_url = os.environ.get("CF_WORKER_URL")
+    proxy_secret = os.environ.get("CF_PROXY_SECRET")
+    use_proxy = bool(worker_url and proxy_secret)
+
+    if use_proxy:
+        print(f"   [INFO] Using Cloudflare Worker proxy")
+    else:
+        print(f"   [INFO] Using direct curl_cffi fetch (local mode)")
+
     last_err = None
 
     for attempt in range(max_attempts):
         try:
-            # Create a new session with authentic Chrome 124 TLS fingerprint
-            session = cffi_requests.Session(impersonate="chrome124")
-
-            # 1. Warm-up session on the homepage to receive Azure session & affinity cookies
-            try:
-                session.get("https://sih.gov.in/", timeout=30)
-            except Exception as e:
-                print(f"   [WARN] Homepage session warmup: {e}")
-
-            # 2. Fetch the target problem statements page
-            headers = {
-                "Referer": "https://sih.gov.in/",
-                "Accept-Language": "en-US,en;q=0.9",
-                "Sec-Fetch-Dest": "document",
-                "Sec-Fetch-Mode": "navigate",
-                "Sec-Fetch-Site": "same-origin",
-            }
-            resp = session.get(url, headers=headers, timeout=90)
+            if use_proxy:
+                # Route through Cloudflare Worker (Indian edge server)
+                session = cffi_requests.Session(impersonate="chrome124")
+                resp = session.get(
+                    worker_url,
+                    headers={"X-Proxy-Secret": proxy_secret},
+                    timeout=120
+                )
+            else:
+                # Direct fetch for local development
+                session = cffi_requests.Session(impersonate="chrome124")
+                try:
+                    session.get("https://sih.gov.in/", timeout=30)
+                except Exception:
+                    pass
+                resp = session.get(url, headers={
+                    "Referer": "https://sih.gov.in/",
+                    "Accept-Language": "en-US,en;q=0.9",
+                }, timeout=90)
 
             if resp.status_code == 403:
                 raise RuntimeError("Azure WAF 403 Forbidden challenge")
+            elif resp.status_code == 401:
+                raise RuntimeError("Cloudflare Worker auth failed - check CF_PROXY_SECRET")
             elif resp.status_code != 200:
                 raise RuntimeError(f"HTTP {resp.status_code}: {resp.text[:200]}")
 
