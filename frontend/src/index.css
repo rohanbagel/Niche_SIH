@@ -131,7 +131,71 @@ a {
 /* Desktop nav links — visible on desktop, hidden on mobile */
 .nav-links-desktop {
   display: flex;
-  gap: 0.5rem;
+  gap: 0.75rem;
+}
+
+/* ── Boxed Nav Buttons ─────────────────────────────────────────────────── */
+
+.nav-btn-box {
+  padding: 0.45rem 1rem;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  box-shadow: 3px 3px 0px var(--shadow-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease, color 0.1s ease;
+}
+
+.nav-btn-box:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0px var(--shadow-color);
+}
+
+.nav-btn-box:active {
+  transform: translate(1px, 1px);
+  box-shadow: 1px 1px 0px var(--shadow-color);
+}
+
+.nav-btn-box.active {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+}
+
+.mobile-nav-btn {
+  margin: 0.5rem 1rem;
+  display: flex;
+}
+
+/* ── Character Stagger Hover Effect ────────────────────────────────────── */
+
+.stagger-char-top {
+  transform: translateY(0);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.text-stagger-container:hover .stagger-char-top,
+.nav-btn-box:hover .stagger-char-top,
+.logo-btn-box:hover .stagger-char-top {
+  transform: translateY(-120%);
+}
+
+.stagger-char-bottom {
+  transform: translateY(120%);
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.text-stagger-container:hover .stagger-char-bottom,
+.nav-btn-box:hover .stagger-char-bottom,
+.logo-btn-box:hover .stagger-char-bottom {
+  transform: translateY(0);
 }
 
 @media (max-width: 768px) {

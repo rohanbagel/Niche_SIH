@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { AnimatedThemeToggleButton } from './ui/animated-theme-toggle-button';
+import { TextStaggerHover } from './ui/TextStaggerHover';
 
 export function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -17,52 +18,58 @@ export function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close menu on route change
   const handleNavClick = () => setMenuOpen(false);
-
-  const navLinkStyle = ({ isActive }) => ({
-    padding: '0.5rem 1rem',
-    border: isActive ? '2px solid var(--border-color)' : '2px solid transparent',
-    background: isActive ? 'var(--text-color)' : 'transparent',
-    color: isActive ? 'var(--bg-color)' : 'var(--text-color)',
-    textTransform: 'uppercase',
-    fontWeight: 'bold',
-    transition: 'none',
-  });
-
-  // Mobile dropdown link style
-  const mobileLinkStyle = ({ isActive }) => ({
-    display: 'block',
-    padding: '0.75rem 1rem',
-    borderBottom: '2px solid var(--border-color)',
-    background: isActive ? 'var(--text-color)' : 'transparent',
-    color: isActive ? 'var(--bg-color)' : 'var(--text-color)',
-    textTransform: 'uppercase',
-    fontWeight: 'bold',
-    textDecoration: 'none',
-    transition: 'none',
-  });
 
   return (
     <div ref={menuRef} style={{ position: 'sticky', top: 0, zIndex: 100 }}>
       <nav className="navbar">
         {/* Left: NICHE logo */}
-        <div style={{ fontSize: '1.5rem', fontWeight: 'bold', textTransform: 'uppercase' }}>
-          NICHE
-        </div>
+        <NavLink
+          to="/"
+          className="logo-btn-box"
+          style={{
+            fontSize: '1.5rem',
+            fontWeight: 'bold',
+            textTransform: 'uppercase',
+            color: 'var(--text-color)',
+            textDecoration: 'none',
+            display: 'inline-flex',
+            alignItems: 'center',
+            cursor: 'pointer',
+          }}
+        >
+          <TextStaggerHover text="NICHE" />
+        </NavLink>
 
-        {/* Center: Desktop nav links (hidden on mobile) */}
+        {/* Center: Desktop boxed nav links with character stagger hover */}
         <div className="nav-links-desktop">
-          <NavLink to="/" style={navLinkStyle}>Home</NavLink>
-          <NavLink to="/niche" style={navLinkStyle}>Niche PS</NavLink>
-          <NavLink to="/all" style={navLinkStyle}>All PS</NavLink>
+          <NavLink
+            to="/"
+            className={({ isActive }) => `nav-btn-box ${isActive ? 'active' : ''}`}
+          >
+            <TextStaggerHover text="Home" />
+          </NavLink>
+
+          <NavLink
+            to="/niche"
+            className={({ isActive }) => `nav-btn-box ${isActive ? 'active' : ''}`}
+          >
+            <TextStaggerHover text="Niche PS" />
+          </NavLink>
+
+          <NavLink
+            to="/all"
+            className={({ isActive }) => `nav-btn-box ${isActive ? 'active' : ''}`}
+          >
+            <TextStaggerHover text="All PS" />
+          </NavLink>
         </div>
 
         {/* Right: Theme toggle + Hamburger (mobile only) */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <AnimatedThemeToggleButton type="horizontal" />
 
-          {/* Hamburger button — only visible on mobile */}
+          {/* Hamburger button */}
           <button
             className="hamburger-btn"
             onClick={() => setMenuOpen(!menuOpen)}
@@ -77,12 +84,34 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile dropdown menu */}
+      {/* Mobile dropdown menu with boxed buttons */}
       <div className={`mobile-menu ${menuOpen ? 'mobile-menu-open' : ''}`}>
-        <NavLink to="/" style={mobileLinkStyle} onClick={handleNavClick}>Home</NavLink>
-        <NavLink to="/niche" style={mobileLinkStyle} onClick={handleNavClick}>Niche PS</NavLink>
-        <NavLink to="/all" style={mobileLinkStyle} onClick={handleNavClick}>All PS</NavLink>
+        <NavLink
+          to="/"
+          className={({ isActive }) => `nav-btn-box mobile-nav-btn ${isActive ? 'active' : ''}`}
+          onClick={handleNavClick}
+        >
+          <TextStaggerHover text="Home" />
+        </NavLink>
+
+        <NavLink
+          to="/niche"
+          className={({ isActive }) => `nav-btn-box mobile-nav-btn ${isActive ? 'active' : ''}`}
+          onClick={handleNavClick}
+        >
+          <TextStaggerHover text="Niche PS" />
+        </NavLink>
+
+        <NavLink
+          to="/all"
+          className={({ isActive }) => `nav-btn-box mobile-nav-btn ${isActive ? 'active' : ''}`}
+          onClick={handleNavClick}
+        >
+          <TextStaggerHover text="All PS" />
+        </NavLink>
       </div>
     </div>
   );
 }
+
+export default Navbar;
