@@ -1,4 +1,5 @@
 import React from 'react';
+import { TypingEffect } from '../components/TypingEffect';
 
 export function Home() {
   return (
@@ -9,9 +10,21 @@ export function Home() {
           margin: 0, 
           lineHeight: 1,
           textTransform: 'uppercase',
-          textShadow: '8px 8px 0px var(--shadow-color)'
+          textShadow: '4px 4px 0px var(--border-color)',
+          WebkitTextStroke: '1px var(--border-color)',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          minHeight: '1.2em',
         }}>
-          NICHE
+          <TypingEffect
+            text={["NICHE"]}
+            speed={160}
+            eraseSpeed={90}
+            eraseDelay={3000}
+            typingDelay={500}
+            cursor="_"
+          />
         </h1>
         <p style={{ 
           fontSize: 'clamp(1rem, 3vw, 1.5rem)', 
