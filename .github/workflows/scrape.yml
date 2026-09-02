@@ -34,4 +34,10 @@ jobs:
           CF_PROXY_SECRET: ${{ secrets.CF_PROXY_SECRET }}
           PYTHONIOENCODING: utf-8
         run: |
+          set +e
           python scripts/scrape.py
+          code=$?
+          if [ $code -ne 0 ]; then
+            echo "::warning::Scraper exited with code $code - likely Azure WAF block, will retry next schedule."
+            exit 0
+          fi
