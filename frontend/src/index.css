@@ -29,21 +29,21 @@
 :root {
   /* Light Mode Variables */
   --bg-color: #ffffff;
-  --text-color: #000000;
-  --border-color: #000000;
-  --accent-color: #000000;
-  --shadow-color: #000000;
+  --text-color: #121214;
+  --border-color: #121214;
+  --accent-color: #121214;
+  --shadow-color: #121214;
   --hover-bg: #f0f0f0;
 }
 
 [data-theme='dark'] {
   /* Dark Mode Variables */
-  --bg-color: #000000;
+  --bg-color: #121214;
   --text-color: #ffffff;
   --border-color: #ffffff;
   --accent-color: #ffffff;
   --shadow-color: #ffffff;
-  --hover-bg: #1a1a1a;
+  --hover-bg: #222226;
 }
 
 * {
@@ -280,4 +280,89 @@ a {
 .mobile-menu a:last-child {
   border-bottom: none;
 }
+
+/* ── Filter Controls & Search ─────────────────────────────────────────── */
+
+.filter-search-input {
+  width: 100%;
+  padding: 0.75rem 2.5rem 0.75rem 2.4rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  outline: none;
+  text-transform: uppercase;
+  transition: box-shadow 0.1s ease;
+}
+
+.filter-search-input:focus {
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.filter-pill-btn {
+  padding: 0.35rem 0.75rem;
+  font-size: 0.8rem;
+  font-family: inherit;
+  font-weight: bold;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.1s ease, box-shadow 0.1s ease, background-color 0.1s ease, color 0.1s ease;
+}
+
+.filter-pill-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.filter-pill-btn.active {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.filter-select {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  font-weight: bold;
+  border: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  outline: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: box-shadow 0.1s ease;
+}
+
+.filter-select:focus {
+  box-shadow: 2px 2px 0px var(--shadow-color);
+}
+
+.filter-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.75rem;
+  font-size: 0.75rem;
+  font-family: inherit;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 2px dashed var(--border-color);
+  background: transparent;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: background-color 0.1s ease, color 0.1s ease;
+}
+
+.filter-reset-btn:hover {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border-style: solid;
+}
+
 
