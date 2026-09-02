@@ -116,3 +116,104 @@ a {
     padding: 0.5rem;
   }
 }
+
+/* ── Navbar ─────────────────────────────────────────────────────────────── */
+
+.navbar {
+  border-bottom: 2px solid var(--border-color);
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--bg-color);
+}
+
+/* Desktop nav links — visible on desktop, hidden on mobile */
+.nav-links-desktop {
+  display: flex;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .nav-links-desktop {
+    display: none;
+  }
+}
+
+/* ── Hamburger Button ───────────────────────────────────────────────────── */
+
+.hamburger-btn {
+  display: none;
+  background: none;
+  border: 2px solid var(--border-color);
+  padding: 0.4rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  position: relative;
+}
+
+@media (max-width: 768px) {
+  .hamburger-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.hamburger-icon {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 20px;
+  height: 14px;
+  position: relative;
+}
+
+.hamburger-icon span {
+  display: block;
+  height: 2px;
+  width: 100%;
+  background-color: var(--text-color);
+  transition: transform 0.25s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+
+/* Animate to X when open */
+.hamburger-icon.open span:nth-child(1) {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.hamburger-icon.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger-icon.open span:nth-child(3) {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* ── Mobile Dropdown Menu ───────────────────────────────────────────────── */
+
+.mobile-menu {
+  display: none;
+  border-bottom: 2px solid var(--border-color);
+  background-color: var(--bg-color);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 0.3s ease;
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
+  }
+}
+
+.mobile-menu-open {
+  max-height: 300px;
+}
+
+.mobile-menu a:last-child {
+  border-bottom: none;
+}
+
