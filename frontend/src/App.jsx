@@ -4,6 +4,7 @@ import { Navbar } from './components/Navbar';
 import { Home } from './pages/Home';
 import { Niche } from './pages/Niche';
 import { All } from './pages/All';
+import { ScrapeCountdownToast } from './components/ScrapeCountdownToast';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/niche" element={<Niche />} />
           <Route path="/all" element={<All />} />
         </Routes>
+        <ScrapeCountdownToast />
       </div>
     </Router>
   );

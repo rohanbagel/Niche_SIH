@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabaseClient';
 
 export function useProblemStatements() {
@@ -6,38 +6,55 @@ export function useProblemStatements() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    async function fetchFromSupabase() {
-      try {
-        const { data: psData, error: dbError } = await supabase
-          .from('problem_statements')
-          .select('*')
-          // Sorting by ideas_count ascending as requested for the Niche strategy
-          .order('ideas_count', { ascending: true });
+  const fetchFromSupabase = useCallback(async (isSilent = false) => {
+    try {
+      if (!isSilent) {
+        setLoading(true);
+      }
 
-        if (dbError) throw dbError;
-        
-        // Map the snake_case DB columns to the camelCase keys the frontend expects
-        const formattedData = psData.map(ps => ({
-          ...ps,
-          ideasCount: ps.ideas_count,
-          psNumber: ps.ps_number,
-          maxIdeas: ps.max_ideas,
-          firstSeenAt: ps.first_seen_at,
-          lastUpdatedAt: ps.last_updated_at
-        }));
+      const { data: psData, error: dbError } = await supabase
+        .from('problem_statements')
+        .select('*')
+        .order('ideas_count', { ascending: true });
 
-        setData(formattedData);
-      } catch (err) {
-        console.error('Error fetching PS data from Supabase:', err);
+      if (dbError) throw dbError;
+
+      const formattedData = psData.map(ps => ({
+        ...ps,
+        ideasCount: ps.ideas_count,
+        psNumber: ps.ps_number,
+        maxIdeas: ps.max_ideas,
+        firstSeenAt: ps.first_seen_at,
+        lastUpdatedAt: ps.last_updated_at
+      }));
+
+      setData(formattedData);
+    } catch (err) {
+      console.error('Error fetching PS data from Supabase:', err);
+      if (!isSilent) {
         setError(err.message);
-      } finally {
+      }
+    } finally {
+      if (!isSilent) {
         setLoading(false);
       }
     }
-
-    fetchFromSupabase();
   }, []);
 
-  return { data, loading, error };
+  useEffect(() => {
+    fetchFromSupabase(false);
+
+    // Listen for silent background re-fetches triggered by the countdown toast
+    const handleSilentSync = () => {
+      fetchFromSupabase(true);
+    };
+
+    window.addEventListener('sih:silent-refetch', handleSilentSync);
+    return () => {
+      window.removeEventListener('sih:silent-refetch', handleSilentSync);
+    };
+  }, [fetchFromSupabase]);
+
+  return { data, loading, error, refetch: () => fetchFromSupabase(false) };
 }
+
