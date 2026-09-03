@@ -1,7 +1,21 @@
 # Environment Variables
 .env
 .env.*
+.env.local
 !.env.example
+
+# SSH Keys & Security Credentials
+*.pem
+*.key
+*.cert
+*.crt
+id_rsa*
+id_ed25519*
+
+# Internal Deployment Logs & Documentation
+AWS_DEPLOYMENT.*
+aws_ec2_guide.*
+*.log
 
 # Python
 __pycache__/
