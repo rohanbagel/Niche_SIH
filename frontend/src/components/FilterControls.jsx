@@ -12,6 +12,9 @@ export function FilterControls({
   setOrg,
   submissionCap,
   setSubmissionCap,
+  onlyNewDrops = false,
+  setOnlyNewDrops,
+  newDropsCount = 0,
   sortBy,
   setSortBy,
   themesList = [],
@@ -27,6 +30,7 @@ export function FilterControls({
     theme !== 'ALL' ||
     org !== 'ALL' ||
     submissionCap !== 'ALL' ||
+    onlyNewDrops ||
     sortBy !== 'ideas-asc';
 
   return (
@@ -71,7 +75,7 @@ export function FilterControls({
         )}
       </div>
 
-      {/* Filter Row: Category Toggle Pills & Submission Cap Presets */}
+      {/* Filter Row: Category Toggle Pills & Submission Cap Presets & New Drops */}
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', marginBottom: '1rem' }}>
         {/* Category Pills */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -110,6 +114,22 @@ export function FilterControls({
                 {preset.label}
               </button>
             ))}
+          </div>
+        )}
+
+        {/* New Drops Quick Filter Toggle */}
+        {setOnlyNewDrops && (
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '0.8rem', textTransform: 'uppercase', opacity: 0.7, marginRight: '0.2rem' }}>
+              RECENCY:
+            </span>
+            <button
+              onClick={() => setOnlyNewDrops(!onlyNewDrops)}
+              className={`filter-pill-btn ${onlyNewDrops ? 'active' : ''}`}
+              title="Show problem statements added in the last 24 hours"
+            >
+              NEW DROPS (&lt;24H) {newDropsCount > 0 ? `[${newDropsCount}]` : ''}
+            </button>
           </div>
         )}
       </div>
@@ -166,6 +186,8 @@ export function FilterControls({
           >
             <option value="ideas-asc">SUBMISSIONS: LOWEST FIRST (NICHE)</option>
             <option value="ideas-desc">SUBMISSIONS: HIGHEST FIRST (POPULAR)</option>
+            <option value="newest-drops">NEWEST DROPS FIRST</option>
+            <option value="recently-updated">RECENTLY UPDATED FIRST</option>
             <option value="ps-asc">PS ID: ASCENDING (SIH26001...)</option>
             <option value="ps-desc">PS ID: DESCENDING (SIH26231...)</option>
             <option value="title-asc">TITLE: A → Z</option>

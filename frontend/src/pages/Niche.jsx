@@ -18,6 +18,9 @@ export function Niche() {
     setOrg,
     submissionCap,
     setSubmissionCap,
+    onlyNewDrops,
+    setOnlyNewDrops,
+    newDropsCount,
     sortBy,
     setSortBy,
     themesList,
@@ -66,6 +69,9 @@ export function Niche() {
         setOrg={setOrg}
         submissionCap={submissionCap}
         setSubmissionCap={setSubmissionCap}
+        onlyNewDrops={onlyNewDrops}
+        setOnlyNewDrops={setOnlyNewDrops}
+        newDropsCount={newDropsCount}
         sortBy={sortBy}
         setSortBy={setSortBy}
         themesList={themesList}

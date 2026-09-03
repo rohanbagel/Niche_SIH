@@ -6,7 +6,39 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
   const [theme, setTheme] = useState('ALL');
   const [org, setOrg] = useState('ALL');
   const [submissionCap, setSubmissionCap] = useState(defaultCap);
+  const [onlyNewDrops, setOnlyNewDrops] = useState(false);
   const [sortBy, setSortBy] = useState(defaultSort);
+
+  // Identify baseline seed timestamp (the initial dataset timestamp)
+  const baselineTimestamp = useMemo(() => {
+    if (!data.length) return 0;
+    let earliest = Infinity;
+    data.forEach((ps) => {
+      if (ps.firstSeenAt) {
+        const t = new Date(ps.firstSeenAt).getTime();
+        if (t < earliest) earliest = t;
+      }
+    });
+    return earliest === Infinity ? 0 : earliest;
+  }, [data]);
+
+  // Helper: check if a problem statement is a genuine newly added drop
+  const isNewDrop = useMemo(() => {
+    return (ps) => {
+      if (!ps || !ps.firstSeenAt) return false;
+      const t = new Date(ps.firstSeenAt).getTime();
+      // Must be added after the initial database baseline (> 1 hour after seed)
+      const isPostBaseline = baselineTimestamp > 0 && t > (baselineTimestamp + 3600000);
+      // And discovered within the last 48 hours
+      const isRecent = (Date.now() - t) <= (48 * 3600000);
+      return isPostBaseline && isRecent;
+    };
+  }, [baselineTimestamp]);
+
+  // Calculate count of newly dropped problem statements
+  const newDropsCount = useMemo(() => {
+    return data.filter((ps) => isNewDrop(ps)).length;
+  }, [data, isNewDrop]);
 
   // Extract unique themes and organizations from the data
   const { themesList, orgsList } = useMemo(() => {
@@ -26,9 +58,17 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
 
   // Filter and sort the problem statements
   const filteredAndSorted = useMemo(() => {
-    let result = [...data];
+    let result = data.map((ps) => ({
+      ...ps,
+      isNewDrop: isNewDrop(ps),
+    }));
 
-    // 1. Search Query
+    // 1. New Drops Filter
+    if (onlyNewDrops) {
+      result = result.filter((ps) => ps.isNewDrop);
+    }
+
+    // 2. Search Query
     if (search.trim()) {
       const q = search.trim().toLowerCase();
       result = result.filter((ps) => {
@@ -41,24 +81,24 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
       });
     }
 
-    // 2. Category Filter
+    // 3. Category Filter
     if (category !== 'ALL') {
       result = result.filter(
         (ps) => ps.category && ps.category.toUpperCase() === category.toUpperCase()
       );
     }
 
-    // 3. Theme Filter
+    // 4. Theme Filter
     if (theme !== 'ALL') {
       result = result.filter((ps) => ps.theme && ps.theme.trim() === theme);
     }
 
-    // 4. Organization Filter
+    // 5. Organization Filter
     if (org !== 'ALL') {
       result = result.filter((ps) => ps.org && ps.org.trim() === org);
     }
 
-    // 5. Submission Cap Filter
+    // 6. Submission Cap Filter
     if (submissionCap !== 'ALL') {
       const cap = parseInt(submissionCap, 10);
       if (!isNaN(cap)) {
@@ -70,12 +110,24 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
       }
     }
 
-    // 6. Sorting
+    // 7. Sorting
     result.sort((a, b) => {
       const aCount = a.ideasCount || 0;
       const bCount = b.ideasCount || 0;
 
       switch (sortBy) {
+        case 'newest-drops': {
+          const timeA = a.firstSeenAt ? new Date(a.firstSeenAt).getTime() : 0;
+          const timeB = b.firstSeenAt ? new Date(b.firstSeenAt).getTime() : 0;
+          if (timeA !== timeB) return timeB - timeA;
+          return (a.psNumber || '').localeCompare(b.psNumber || '', undefined, { numeric: true });
+        }
+        case 'recently-updated': {
+          const timeA = a.lastUpdatedAt ? new Date(a.lastUpdatedAt).getTime() : 0;
+          const timeB = b.lastUpdatedAt ? new Date(b.lastUpdatedAt).getTime() : 0;
+          if (timeA !== timeB) return timeB - timeA;
+          return (a.psNumber || '').localeCompare(b.psNumber || '', undefined, { numeric: true });
+        }
         case 'ideas-asc':
           return aCount !== bCount ? aCount - bCount : (a.sno || 0) - (b.sno || 0);
         case 'ideas-desc':
@@ -94,7 +146,7 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
     });
 
     return result;
-  }, [data, search, category, theme, org, submissionCap, sortBy]);
+  }, [data, search, category, theme, org, submissionCap, onlyNewDrops, sortBy]);
 
   const resetFilters = () => {
     setSearch('');
@@ -102,6 +154,7 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
     setTheme('ALL');
     setOrg('ALL');
     setSubmissionCap(defaultCap);
+    setOnlyNewDrops(false);
     setSortBy(defaultSort);
   };
 
@@ -116,6 +169,9 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
     setOrg,
     submissionCap,
     setSubmissionCap,
+    onlyNewDrops,
+    setOnlyNewDrops,
+    newDropsCount,
     sortBy,
     setSortBy,
     themesList,

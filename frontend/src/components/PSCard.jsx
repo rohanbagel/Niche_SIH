@@ -2,7 +2,7 @@ import React from 'react';
 import { PillBadge } from './PillBadge';
 
 export function PSCard({ ps }) {
-  const isNew = ps.changeType === 'new' || ps.firstSeenAt === ps.lastUpdatedAt;
+  const isNewDrop = Boolean(ps.isNewDrop);
   
   return (
     <div className="brutalist-container brutalist-shadow-hover" style={{
@@ -35,7 +35,7 @@ export function PSCard({ ps }) {
       <div>
         <PillBadge type={ps.category}>{ps.category}</PillBadge>
         {ps.theme && <PillBadge type="software">{ps.theme}</PillBadge>}
-        {isNew && <PillBadge type="new">NEW</PillBadge>}
+        {isNewDrop && <PillBadge type="new">NEW DROP</PillBadge>}
       </div>
 
       {ps.description && (
