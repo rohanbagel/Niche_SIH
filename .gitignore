@@ -64,7 +64,7 @@ ehthumbs_vista.db
 *~
 
 # Assets
-fonts/
+/Fonts/
 
 # Database Schema
 query.sql
