@@ -49,10 +49,10 @@ export function Niche() {
     <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
       {/* Header */}
       <div style={{ marginBottom: '1.5rem', borderBottom: '3px solid var(--border-color)', paddingBottom: '1rem' }}>
-        <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', margin: 0, textTransform: 'uppercase' }}>
+        <h1 style={{ fontSize: 'clamp(2.5rem, 6vw, 3.5rem)', margin: 0, textTransform: 'uppercase', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
           NICHE PS
         </h1>
-        <p style={{ fontFamily: 'monospace', fontSize: '1.05rem', marginTop: '0.5rem', opacity: 0.85 }}>
+        <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', marginTop: '0.5rem', opacity: 0.85 }}>
           Sorted by lowest competition first. Pick problem statements with the least submissions to maximize selection odds.
         </p>
       </div>
@@ -97,7 +97,7 @@ export function Niche() {
           <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', textTransform: 'uppercase' }}>
             NO PROBLEM STATEMENTS FOUND
           </h3>
-          <p style={{ fontFamily: 'monospace', fontSize: '0.95rem', opacity: 0.8, marginBottom: '1.5rem' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.95rem', opacity: 0.8, marginBottom: '1.5rem' }}>
             No problem statements match your active filter criteria.
           </p>
           <button onClick={resetFilters} className="brutalist-button">

@@ -53,8 +53,9 @@ export function ScrapeCountdownToast() {
           color: 'var(--text-color)',
           border: '2px solid var(--border-color)',
           boxShadow: '3px 3px 0px var(--shadow-color)',
-          fontFamily: "'Minecraft', monospace",
-          fontSize: '0.82rem',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 600,
+          fontSize: '0.85rem',
           padding: '8px 14px',
           cursor: 'pointer',
           display: 'flex',
@@ -86,23 +87,26 @@ export function ScrapeCountdownToast() {
         color: 'var(--text-color)',
         border: '2px solid var(--border-color)',
         boxShadow: '4px 4px 0px var(--shadow-color)',
-        fontFamily: "'Minecraft', monospace",
-        fontSize: '0.85rem',
+        fontFamily: 'var(--font-body)',
+        fontSize: '0.88rem',
         padding: '10px 14px',
         display: 'flex',
         alignItems: 'center',
         gap: '12px',
-        letterSpacing: '0.5px',
+        letterSpacing: '0.2px',
         maxWidth: 'calc(100vw - 48px)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
         <span style={{ fontSize: '0.95rem' }}>⏱</span>
-        <span style={{ fontWeight: 600 }}>
+        <span>
           {isSyncing ? (
-            <span style={{ letterSpacing: '1px' }}>SYNCING SUPABASE...</span>
+            <span style={{ fontWeight: 600, letterSpacing: '0.5px' }}>SYNCING SUPABASE...</span>
           ) : (
-            <>NEXT SCRAPE IN: <span style={{ fontWeight: 'bold' }}>{timeText}</span></>
+            <>
+              <span style={{ fontWeight: 600, textTransform: 'uppercase', opacity: 0.9 }}>NEXT SCRAPE IN: </span>
+              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.04em' }}>{timeText}</span>
+            </>
           )}
         </span>
       </div>
@@ -115,7 +119,7 @@ export function ScrapeCountdownToast() {
           background: 'transparent',
           color: 'var(--text-color)',
           border: '1px solid var(--border-color)',
-          fontFamily: "'Minecraft', monospace",
+          fontFamily: 'inherit',
           fontSize: '0.85rem',
           lineHeight: '1',
           padding: '3px 6px',

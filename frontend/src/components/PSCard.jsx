@@ -15,9 +15,18 @@ export function PSCard({ ps }) {
     }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
-          <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', lineHeight: '1.2' }}>{ps.title}</h3>
-          <p style={{ fontSize: '0.875rem', opacity: 0.8, fontFamily: 'monospace' }}>
-            {ps.psNumber} • {ps.org}
+          <h3 style={{ 
+            fontSize: '1.25rem', 
+            marginBottom: '0.5rem', 
+            lineHeight: '1.3', 
+            fontFamily: 'var(--font-display)', 
+            fontWeight: 600,
+            letterSpacing: '-0.01em'
+          }}>
+            {ps.title}
+          </h3>
+          <p style={{ fontSize: '0.875rem', opacity: 0.85, fontFamily: 'var(--font-body)', fontWeight: 500 }}>
+            <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600 }}>{ps.psNumber}</span> • {ps.org}
           </p>
         </div>
         
@@ -27,8 +36,8 @@ export function PSCard({ ps }) {
           textAlign: 'center',
           minWidth: '100px'
         }}>
-          <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{ps.ideasCount}</div>
-          <div style={{ fontSize: '0.75rem', textTransform: 'uppercase' }}>Submissions</div>
+          <div style={{ fontSize: '1.6rem', fontWeight: 'bold', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{ps.ideasCount}</div>
+          <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontFamily: 'var(--font-display)', fontWeight: 600, letterSpacing: '0.05em', marginTop: '0.3rem' }}>Submissions</div>
         </div>
       </div>
 
@@ -43,10 +52,12 @@ export function PSCard({ ps }) {
           marginTop: '0.5rem', 
           paddingTop: '1rem', 
           borderTop: '2px dashed var(--border-color)',
-          fontSize: '0.875rem',
-          fontFamily: 'monospace'
+          fontSize: '0.925rem',
+          lineHeight: '1.6',
+          fontFamily: 'var(--font-body)',
+          opacity: 0.92
         }}>
-          {ps.description.length > 200 ? ps.description.substring(0, 200) + '...' : ps.description}
+          {ps.description.length > 220 ? ps.description.substring(0, 220) + '...' : ps.description}
         </div>
       )}
     </div>

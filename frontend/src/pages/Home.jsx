@@ -16,6 +16,8 @@ export function Home() {
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '1.2em',
+          fontFamily: 'var(--font-pixel)',
+          WebkitFontSmoothing: 'none',
         }}>
           <TypingEffect
             text={["NICHE"]}
@@ -27,13 +29,15 @@ export function Home() {
           />
         </h1>
         <p style={{ 
-          fontSize: 'clamp(1rem, 3vw, 1.5rem)', 
+          fontSize: 'clamp(1rem, 2.5vw, 1.25rem)', 
           marginTop: '2rem',
-          maxWidth: '600px',
-          fontFamily: 'monospace',
+          maxWidth: '650px',
+          fontFamily: 'var(--font-body)',
+          fontWeight: 600,
+          letterSpacing: '0.02em',
           textTransform: 'uppercase',
           border: '2px solid var(--border-color)',
-          padding: '1rem',
+          padding: '0.9rem 1.2rem',
           background: 'var(--text-color)',
           color: 'var(--bg-color)'
         }}>
@@ -43,17 +47,17 @@ export function Home() {
 
       <section className="container" style={{ paddingBottom: '4rem' }}>
         <div className="brutalist-container brutalist-shadow" style={{ padding: '2rem' }}>
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', textTransform: 'uppercase', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', textTransform: 'uppercase', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
             The Strategy
           </h2>
-          <p style={{ fontFamily: 'monospace', fontSize: '1.1rem', marginBottom: '2rem' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: '1.7', marginBottom: '2rem' }}>
             In SIH, teams that pick a Problem Statement with fewer existing submissions have a statistically better shot at getting shortlisted. Evaluators and selection pressure are distributed per-PS. The official site exposes submission counts, but there's no way to easily sort or find the ones the crowd ignored.
           </p>
 
-          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', textTransform: 'uppercase', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem' }}>
+          <h2 style={{ fontSize: '2rem', marginBottom: '1rem', textTransform: 'uppercase', borderBottom: '2px solid var(--border-color)', paddingBottom: '0.5rem', fontFamily: 'var(--font-display)', fontWeight: 600 }}>
             How it works
           </h2>
-          <p style={{ fontFamily: 'monospace', fontSize: '1.1rem' }}>
+          <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: '1.7' }}>
             NICHE scrapes the Azure WAF-protected SIH portal every 15 minutes to track live submission counts and detect newly added Problem Statements before anyone else notices them.
           </p>
         </div>

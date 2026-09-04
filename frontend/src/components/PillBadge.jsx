@@ -3,9 +3,11 @@ import React from 'react';
 export function PillBadge({ children, type }) {
   const baseStyle = {
     display: 'inline-block',
-    padding: '0.25rem 0.5rem',
-    fontSize: '0.75rem',
-    fontWeight: 'bold',
+    padding: '0.25rem 0.55rem',
+    fontSize: '0.72rem',
+    fontFamily: 'var(--font-display)',
+    fontWeight: 600,
+    letterSpacing: '0.04em',
     textTransform: 'uppercase',
     border: '2px solid var(--border-color)',
     marginRight: '0.5rem',
