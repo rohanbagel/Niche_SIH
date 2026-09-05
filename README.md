@@ -1,4 +1,4 @@
-# NICHE SIH 2026 🎯
+# NICHE SIH 2026
 
 > **Real-Time Problem Statement Intelligence & Competition Tracker for Smart India Hackathon 2026.**
 
@@ -6,7 +6,7 @@ Niche SIH tracks live idea submission counts across all official SIH 2026 proble
 
 ---
 
-## ⚡ The Strategy
+## The Strategy
 
 In the Smart India Hackathon, teams that pick a Problem Statement with fewer existing submissions have a statistically superior chance of getting shortlisted. Selection pressure is distributed **per problem statement**, not across the entire hackathon. 
 
@@ -14,7 +14,7 @@ The official SIH portal displays submission numbers but offers no way to sort by
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ```text
 ┌─────────────────────────────────────────────────────────┐
@@ -29,7 +29,7 @@ The official SIH portal displays submission numbers but offers no way to sort by
                              ▼
                   ┌─────────────────────┐
                   │   sih.gov.in (WAF)  │
-                  │   Status: 200 OK ✅ │
+                  │   Status: 200 OK    │
                   └──────────┬──────────┘
                              │
        2. Parse 233+ PS      │
@@ -51,27 +51,27 @@ The official SIH portal displays submission numbers but offers no way to sort by
 
 ---
 
-## ✨ Features
+## Features
 
-- **⏱️ Live Scrape Countdown Widget:** A persistent bottom-right brutalist toast counting down to the exact 15-minute cron mark (`:00`, `:15`, `:30`, `:45`). Minimizable with one click.
-- **🔄 Zero-Reload Silent Sync:** When the countdown hits `00M 00S`, the frontend quietly fetches fresh data from Supabase in the background without refreshing the page, resetting scroll position, or clearing active filters.
-- **🆕 New Drops Detection:** Automatically flags newly added problem statements discovered within the last 24–48 hours with a bold `NEW DROP` badge and a dedicated one-click recency filter.
-- **🎯 Niche PS View:** Direct sorting by lowest submissions first, highlighting untapped problem statements with 0 to 5 submissions.
-- **🔍 Multi-Dimensional Filtering:**
+- **Live Scrape Countdown Widget:** A persistent bottom-right brutalist toast counting down to the exact 15-minute cron mark (`:00`, `:15`, `:30`, `:45`). Minimizable with one click.
+- **Zero-Reload Silent Sync:** When the countdown hits `00M 00S`, the frontend quietly fetches fresh data from Supabase in the background without refreshing the page, resetting scroll position, or clearing active filters.
+- **New Drops Detection:** Automatically flags newly added problem statements discovered within the last 24-48 hours with a bold `NEW DROP` badge and a dedicated one-click recency filter.
+- **Niche PS View:** Direct sorting by lowest submissions first, highlighting untapped problem statements with 0 to 5 submissions.
+- **Multi-Dimensional Filtering:**
   - Search by Title, PS Number (e.g., `SIH26001`), Ministry / Organization, or Theme.
   - Filter by Category (`ALL`, `SOFTWARE`, `HARDWARE`).
   - Submission caps (`ALL`, `0 IDEAS`, `≤ 5`, `≤ 10`, `≤ 20`).
   - Multi-sort logic: Lowest Competition, Most Popular, Newest Drops First, Recently Updated, PS ID, and Alphabetical.
-- **🎨 Neo-Brutalist Design System:** Custom high-contrast aesthetic with `#121214` Deep Jet Black borders, hard drop shadows, custom Minecraft typography, and reactive Light / Dark modes.
+- **Neo-Brutalist Design System:** Custom high-contrast aesthetic with `#121214` Deep Jet Black borders, hard drop shadows, Clash Display and Satoshi typography, and reactive Light / Dark modes.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework:** React 19 + Vite
 - **Styling:** Neo-brutalist Vanilla CSS with custom design tokens
-- **Typography:** Minecraft Regular & Bold
+- **Typography:** Clash Display (Headings) & Satoshi (Body)
 - **Routing:** React Router v7
 - **Icons:** Lucide React
 - **Deployment:** Vercel
@@ -90,7 +90,7 @@ The official SIH portal displays submission numbers but offers no way to sort by
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### 1. Clone the Repository
 ```bash
@@ -150,7 +150,7 @@ python scripts/scrape.py
 
 ---
 
-## 🔒 Security
+## Security
 
 - **Strict Key Separation:** The frontend repository only uses the public Supabase `anon` key, scoped via PostgreSQL Row Level Security (RLS) for read-only access.
 - **Admin Keys Isolated:** The privileged `service_role` key is strictly loaded via environment variables on the isolated AWS EC2 scraper instance and is never stored in code or repository commits.
@@ -158,6 +158,6 @@ python scripts/scrape.py
 
 ---
 
-## 📄 License
+## License
 
-This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
