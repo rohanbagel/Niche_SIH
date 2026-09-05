@@ -6,18 +6,18 @@ export function Home() {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '80vh' }}>
       <main style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', textAlign: 'center', padding: '4rem 1rem' }}>
         <h1 style={{ 
-          fontSize: 'clamp(4rem, 15vw, 10rem)', 
+          fontSize: 'clamp(4.5rem, 15vw, 9.5rem)', 
           margin: 0, 
           lineHeight: 1,
           textTransform: 'uppercase',
-          textShadow: '4px 4px 0px var(--border-color)',
-          WebkitTextStroke: '1px var(--border-color)',
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
           minHeight: '1.2em',
-          fontFamily: 'var(--font-pixel)',
-          WebkitFontSmoothing: 'none',
+          fontFamily: 'var(--font-display)',
+          fontWeight: 700,
+          letterSpacing: '0.02em',
+          WebkitFontSmoothing: 'antialiased',
         }}>
           <TypingEffect
             text={["NICHE"]}
