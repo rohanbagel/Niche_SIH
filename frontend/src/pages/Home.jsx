@@ -1,5 +1,6 @@
 import React from 'react';
 import { TypingEffect } from '../components/TypingEffect';
+import { Star, ArrowUpRight } from 'lucide-react';
 
 export function Home() {
   return (
@@ -60,6 +61,75 @@ export function Home() {
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: '1.7' }}>
             NICHE scrapes the Azure WAF-protected SIH portal every 15 minutes to track live submission counts and detect newly added Problem Statements before anyone else notices them.
           </p>
+        </div>
+
+        {/* Star on GitHub Support Box */}
+        <div 
+          className="brutalist-container brutalist-shadow" 
+          style={{ 
+            marginTop: '2rem', 
+            padding: '2rem',
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '1.5rem',
+            background: 'var(--bg-color)'
+          }}
+        >
+          <div style={{ maxWidth: '640px' }}>
+            <h2 style={{ 
+              fontSize: '1.6rem', 
+              textTransform: 'uppercase', 
+              fontFamily: 'var(--font-display)', 
+              fontWeight: 700,
+              letterSpacing: '-0.01em',
+              marginBottom: '0.5rem'
+            }}>
+              Support The Project
+            </h2>
+            <p style={{ 
+              fontFamily: 'var(--font-body)', 
+              fontSize: '1.05rem', 
+              lineHeight: '1.6', 
+              opacity: 0.9 
+            }}>
+              Not asking you to buy me a coffee, but drop a star on GitHub so I know you're cooking something up for SIH.
+            </p>
+          </div>
+
+          <a
+            href="https://github.com/rohanbagel/Niche_SIH"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="brutalist-button"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.85rem 1.4rem',
+              fontSize: '0.92rem',
+              fontFamily: 'var(--font-display)',
+              fontWeight: 600,
+              letterSpacing: '0.04em',
+              textDecoration: 'none',
+              boxShadow: '3px 3px 0px var(--shadow-color)',
+              transition: 'transform 0.1s ease, box-shadow 0.1s ease',
+              whiteSpace: 'nowrap'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.transform = 'translate(-2px, -2px)';
+              e.currentTarget.style.boxShadow = '5px 5px 0px var(--shadow-color)';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.transform = 'translate(0, 0)';
+              e.currentTarget.style.boxShadow = '3px 3px 0px var(--shadow-color)';
+            }}
+          >
+            <Star size={16} />
+            <span>STAR ON GITHUB</span>
+            <ArrowUpRight size={16} />
+          </a>
         </div>
       </section>
     </div>
