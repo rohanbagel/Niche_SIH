@@ -14,6 +14,25 @@ The official SIH portal displays submission numbers but offers no way to sort by
 
 ---
 
+## What's New
+
+### Dedicated Problem Statement Tracker (`/track`)
+- **Private Client-Side Watchlist:** Pin and monitor specific problem statements across sessions using browser `localStorage` with zero accounts, passwords, or personal data tracking.
+- **Submission Speed & Pace Engine:** Evaluates live competition velocitycd f and labels statements as `COLD / STAGNANT` (< 1.0 idea/day), `STEADY / MODERATE` (1.0 to 3.0 ideas/day), or `SURGING / RAPID` (> 3.0 ideas/day).
+- **Recent Inflow Telemetry:** Instant metrics on submissions added in the past 24 hours and past 7 days, alongside average daily submission velocity.
+- **Grand Finale Shortlist Odds Meter:** Computes realistic shortlisting odds based on the official SIH rule of 4 to 5 teams shortlisted per statement.
+- **Visual Growth Curve Chart:** Responsive SVG step-curve tracking every historical submission increase from initial publication to present day.
+- **Timestamped Audit Trail:** Expandable chronological log of all historical scrape events showing previous counts, new counts, and net changes in Indian Standard Time (IST).
+
+### In-App Details Modal
+- **Zero-Lag Specification Viewer:** Clicking any problem statement title opens a native neo-brutalist modal displaying complete problem descriptions, backgrounds, and ministry details without redirecting away or navigating government portal tables.
+- **Direct Portal Link:** Built-in shortcut targeting the official government portal modal anchor in a new tab.
+
+### Performance & Telemetry
+- **Vercel Web Analytics & Speed Insights:** Integrated real-world visitor telemetry and Core Web Vitals performance tracking.
+
+---
+
 ## Architecture
 
 ```text
@@ -53,6 +72,8 @@ The official SIH portal displays submission numbers but offers no way to sort by
 
 ## Features
 
+- **Dedicated PS Tracker (`/track`):** Real-time submission pace, daily velocity rates, Grand Finale shortlisting odds, and private watchlist pinning.
+- **In-App Problem Details Modal:** Instant modal view on any card revealing complete problem statement descriptions, backgrounds, and ministry info.
 - **Live Scrape Countdown Widget:** A persistent bottom-right brutalist toast counting down to the exact 15-minute cron mark (`:00`, `:15`, `:30`, `:45`). Minimizable with one click.
 - **Zero-Reload Silent Sync:** When the countdown hits `00M 00S`, the frontend quietly fetches fresh data from Supabase in the background without refreshing the page, resetting scroll position, or clearing active filters.
 - **New Drops Detection:** Automatically flags newly added problem statements discovered within the last 24-48 hours with a bold `NEW DROP` badge and a dedicated one-click recency filter.

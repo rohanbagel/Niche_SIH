@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { Link } from 'react-router-dom';
 import { PillBadge } from './PillBadge';
-import { X, ArrowUpRight, Copy, Check } from 'lucide-react';
+import { X, ArrowUpRight, Copy, Check, Activity } from 'lucide-react';
 
 export function PSDetailModal({ ps, isOpen, onClose }) {
   const [copied, setCopied] = useState(false);
@@ -148,6 +149,23 @@ export function PSDetailModal({ ps, isOpen, onClose }) {
           </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
+            <Link
+              to={`/track?ps=${ps.psNumber}`}
+              onClick={onClose}
+              className="brutalist-button ps-modal-btn"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.4rem',
+                fontWeight: 700,
+                textDecoration: 'none'
+              }}
+              title="Track submission velocity and growth curve for this PS"
+            >
+              <Activity size={16} />
+              <span>TRACK VELOCITY</span>
+            </Link>
+
             <a
               href={officialUrl}
               target="_blank"

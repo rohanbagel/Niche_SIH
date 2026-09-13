@@ -63,6 +63,13 @@ export function Navbar() {
           >
             <TextStaggerHover text="All PS" />
           </NavLink>
+
+          <NavLink
+            to="/track"
+            className={({ isActive }) => `nav-btn-box ${isActive ? 'active' : ''}`}
+          >
+            <TextStaggerHover text="Track PS" />
+          </NavLink>
         </div>
 
         {/* Right: Theme toggle + Hamburger (mobile only) */}
@@ -108,6 +115,14 @@ export function Navbar() {
           onClick={handleNavClick}
         >
           <TextStaggerHover text="All PS" />
+        </NavLink>
+
+        <NavLink
+          to="/track"
+          className={({ isActive }) => `nav-btn-box mobile-nav-btn ${isActive ? 'active' : ''}`}
+          onClick={handleNavClick}
+        >
+          <TextStaggerHover text="Track PS" />
         </NavLink>
       </div>
     </div>
