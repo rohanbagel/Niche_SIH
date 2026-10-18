@@ -190,10 +190,10 @@ export function Track() {
             letterSpacing: '0.06em',
             textTransform: 'uppercase'
           }}>
-            REAL-TIME TRACKER
+            FINAL ARCHIVE TRACKER
           </span>
           <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', opacity: 0.75 }}>
-            Private Client-Side Storage
+            Submissions Concluded
           </span>
         </div>
         <h1 style={{ 
@@ -207,7 +207,7 @@ export function Track() {
           TRACK YOUR PS
         </h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '1rem', opacity: 0.85, maxWidth: '680px', marginTop: '0.5rem' }}>
-          Monitor submission speed, historical velocity, and Grand Finale shortlisting odds for your chosen SIH problem statement.
+          Analyze final submission velocity, historical competition growth curves, and Grand Finale shortlisting odds for your chosen SIH problem statement.
         </p>
       </div>
 
@@ -521,7 +521,7 @@ export function Track() {
             <div className="brutalist-container brutalist-shadow" style={{ padding: '1.25rem', background: 'var(--bg-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.75 }}>
-                  SUBMISSION SPEED (PACE)
+                  SUBMISSION SPEED (FINAL PACE)
                 </span>
                 {metrics.pace === 'SURGING' ? (
                   <Flame size={20} color="#ff4444" />
@@ -550,7 +550,7 @@ export function Track() {
             <div className="brutalist-container brutalist-shadow" style={{ padding: '1.25rem', background: 'var(--bg-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.75 }}>
-                  DAILY INFLOW VELOCITY
+                  INFLOW VELOCITY
                 </span>
                 <Zap size={20} />
               </div>
@@ -558,7 +558,7 @@ export function Track() {
                 +{metrics.dailyVelocity} <span style={{ fontSize: '0.85rem', fontFamily: 'var(--font-display)', fontWeight: 600 }}>ideas/day</span>
               </div>
               <div style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', opacity: 0.85 }}>
-                +{metrics.last24hDelta} in past 24h • +{metrics.last7dDelta} in past 7d
+                +{metrics.last24hDelta} in final 24h • +{metrics.last7dDelta} in final 7d
               </div>
             </div>
 
@@ -584,7 +584,7 @@ export function Track() {
             <div className="brutalist-container brutalist-shadow" style={{ padding: '1.25rem', background: 'var(--bg-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.75 }}>
-                  CURRENT SUBMISSIONS
+                  FINAL SUBMISSIONS
                 </span>
                 <Clock size={20} />
               </div>
@@ -592,7 +592,7 @@ export function Track() {
                 {activePs.ideasCount} <span style={{ fontSize: '0.9rem', fontFamily: 'var(--font-mono)', opacity: 0.6 }}>/ {activePs.maxIdeas || 100}</span>
               </div>
               <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.825rem', opacity: 0.85 }}>
-                {Math.round(((activePs.ideasCount || 0) / (activePs.maxIdeas || 100)) * 100)}% capacity filled
+                {Math.round(((activePs.ideasCount || 0) / (activePs.maxIdeas || 100)) * 100)}% capacity filled at deadline
               </div>
             </div>
           </div>

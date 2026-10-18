@@ -43,16 +43,6 @@ export function useProblemStatements() {
 
   useEffect(() => {
     fetchFromSupabase(false);
-
-    // Listen for silent background re-fetches triggered by the countdown toast
-    const handleSilentSync = () => {
-      fetchFromSupabase(true);
-    };
-
-    window.addEventListener('sih:silent-refetch', handleSilentSync);
-    return () => {
-      window.removeEventListener('sih:silent-refetch', handleSilentSync);
-    };
   }, [fetchFromSupabase]);
 
   return { data, loading, error, refetch: () => fetchFromSupabase(false) };

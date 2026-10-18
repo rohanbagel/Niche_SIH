@@ -49,10 +49,13 @@ export function usePSHistory(psNumber, currentIdeasCount = 0) {
     };
   }, [psNumber]);
 
-  // Compute telemetry metrics
-  const now = Date.now();
-  const oneDayAgo = now - 24 * 60 * 60 * 1000;
-  const sevenDaysAgo = now - 7 * 24 * 60 * 60 * 1000;
+  // Compute telemetry metrics anchored to the final recorded deadline snapshot
+  const referenceTime = history.length > 0
+    ? new Date(history[history.length - 1].created_at).getTime()
+    : Date.now();
+
+  const oneDayAgo = referenceTime - 24 * 60 * 60 * 1000;
+  const sevenDaysAgo = referenceTime - 7 * 24 * 60 * 60 * 1000;
 
   let last24hDelta = 0;
   let last7dDelta = 0;
@@ -79,11 +82,11 @@ export function usePSHistory(psNumber, currentIdeasCount = 0) {
     };
   });
 
-  // Calculate daily velocity across total tracked span
+  // Calculate daily velocity across total tracked span up to deadline close
   let dailyVelocity = 0;
   if (timeline.length > 0) {
     const firstTime = new Date(timeline[0].timestamp).getTime();
-    const daysSpan = Math.max(1, (now - firstTime) / (1000 * 60 * 60 * 24));
+    const daysSpan = Math.max(1, (referenceTime - firstTime) / (1000 * 60 * 60 * 24));
     const totalAdded = (currentIdeasCount || 0) - (timeline[0].oldCount || 0);
     dailyVelocity = Number((Math.max(0, totalAdded) / daysSpan).toFixed(1));
   } else if (currentIdeasCount > 0) {
@@ -91,19 +94,19 @@ export function usePSHistory(psNumber, currentIdeasCount = 0) {
     dailyVelocity = Number((currentIdeasCount / 7).toFixed(1));
   }
 
-  // Pace classification
+  // Pace classification at deadline close
   let pace = 'COLD';
   let paceLabel = 'COLD / STAGNANT';
-  let paceDescription = 'Few to no recent submissions. Minimal competition from other teams.';
+  let paceDescription = 'Few to no submissions leading into close. Minimal competition from other teams.';
 
   if (last24hDelta >= 4 || dailyVelocity >= 3.0) {
     pace = 'SURGING';
-    paceLabel = 'SURGING / RAPID PACE';
-    paceDescription = 'Ideas are being submitted rapidly right now. Competition is accelerating.';
+    paceLabel = 'SURGING / RAPID';
+    paceDescription = 'Ideas were submitted rapidly leading into deadline close. High competitor interest.';
   } else if (last24hDelta >= 1 || dailyVelocity >= 1.0) {
     pace = 'STEADY';
-    paceLabel = 'STEADY / MODERATE PACE';
-    paceDescription = 'Consistent submission pace. Moderate ongoing competitor interest.';
+    paceLabel = 'STEADY / MODERATE';
+    paceDescription = 'Consistent submission pace throughout registration. Moderate competitor interest.';
   }
 
   // Official SIH Grand Finale shortlisting calculations (4 to 5 teams shortlisted per PS)

@@ -56,7 +56,8 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# Scraper Debug Artifacts
+# Scraper Debug Artifacts & Export Dumps
+data/*.json
 data/debug_page.html
 data/debug_*.html
 

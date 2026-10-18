@@ -53,7 +53,7 @@ export function All() {
           ALL PS
         </h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', marginTop: '0.5rem', opacity: 0.85 }}>
-          Browse, filter, and inspect all official SIH 2026 problem statements with live submission counts.
+          Browse, filter, and inspect all 265 official SIH 2026 problem statements with final verified submission counts at deadline close.
         </p>
       </div>
 

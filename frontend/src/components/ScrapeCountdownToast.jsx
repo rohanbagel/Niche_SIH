@@ -1,49 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-
-const SCRAPE_INTERVAL_SECONDS = 15 * 60; // 15-minute cron cadence
+import React, { useState } from 'react';
 
 export function ScrapeCountdownToast() {
-  const [timeText, setTimeText] = useState('15M 00S');
-  const [isSyncing, setIsSyncing] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const hasTriggeredSync = useRef(false);
-
-  useEffect(() => {
-    function updateClock() {
-      const now = new Date();
-      const secondsIntoHour = now.getMinutes() * 60 + now.getSeconds();
-      const secondsSinceScrape = secondsIntoHour % SCRAPE_INTERVAL_SECONDS;
-      const secondsRemaining = SCRAPE_INTERVAL_SECONDS - secondsSinceScrape;
-
-      // First 5 seconds of the 15-minute mark: show SYNCING status and fire background refresh
-      if (secondsSinceScrape < 5) {
-        setIsSyncing(true);
-        if (!hasTriggeredSync.current) {
-          hasTriggeredSync.current = true;
-          // Silent background refetch from Supabase without any page refresh
-          window.dispatchEvent(new CustomEvent('sih:silent-refetch'));
-        }
-      } else {
-        setIsSyncing(false);
-        hasTriggeredSync.current = false;
-      }
-
-      const mins = Math.floor(secondsRemaining / 60);
-      const secs = secondsRemaining % 60;
-      setTimeText(`${String(mins).padStart(2, '0')}M ${String(secs).padStart(2, '0')}S`);
-    }
-
-    updateClock();
-    const interval = setInterval(updateClock, 1000);
-    return () => clearInterval(interval);
-  }, []);
 
   if (isMinimized) {
     return (
       <button
         onClick={() => setIsMinimized(false)}
-        title="Click to expand countdown"
-        aria-label="Expand scrape countdown"
+        title="Click to view archive status"
+        aria-label="Expand archive status"
         style={{
           position: 'fixed',
           bottom: '24px',
@@ -54,7 +19,7 @@ export function ScrapeCountdownToast() {
           border: '2px solid var(--border-color)',
           boxShadow: '3px 3px 0px var(--shadow-color)',
           fontFamily: 'var(--font-mono)',
-          fontWeight: 600,
+          fontWeight: 700,
           fontSize: '0.85rem',
           padding: '8px 14px',
           cursor: 'pointer',
@@ -68,8 +33,8 @@ export function ScrapeCountdownToast() {
         onMouseEnter={(e) => (e.currentTarget.style.transform = 'translate(-2px, -2px)')}
         onMouseLeave={(e) => (e.currentTarget.style.transform = 'translate(0, 0)')}
       >
-        <span>⏱</span>
-        <span>{isSyncing ? 'SYNCING...' : timeText}</span>
+        <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }} />
+        <span>FINAL ARCHIVE</span>
       </button>
     );
   }
@@ -98,23 +63,21 @@ export function ScrapeCountdownToast() {
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-        <span style={{ fontSize: '0.95rem' }}>⏱</span>
-        <span>
-          {isSyncing ? (
-            <span style={{ fontWeight: 600, letterSpacing: '0.5px' }}>SYNCING SUPABASE...</span>
-          ) : (
-            <>
-              <span style={{ fontWeight: 600, textTransform: 'uppercase', opacity: 0.9 }}>NEXT SCRAPE IN: </span>
-              <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, letterSpacing: '0.04em' }}>{timeText}</span>
-            </>
-          )}
-        </span>
+        <span style={{ display: 'inline-block', width: '9px', height: '9px', borderRadius: '50%', background: '#22c55e' }} />
+        <div>
+          <span style={{ fontWeight: 700, textTransform: 'uppercase', fontFamily: 'var(--font-display)', letterSpacing: '0.04em' }}>
+            SUBMISSIONS CLOSED
+          </span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: '0.8rem', opacity: 0.8, marginLeft: '8px' }}>
+            [FINAL ARCHIVED DATA]
+          </span>
+        </div>
       </div>
 
       <button
         onClick={() => setIsMinimized(true)}
-        title="Minimize countdown"
-        aria-label="Minimize countdown toast"
+        title="Minimize toast"
+        aria-label="Minimize toast"
         style={{
           background: 'transparent',
           color: 'var(--text-color)',
@@ -137,3 +100,4 @@ export function ScrapeCountdownToast() {
     </div>
   );
 }
+

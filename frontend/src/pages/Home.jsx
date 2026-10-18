@@ -44,6 +44,25 @@ export function Home() {
         }}>
           Find SIH 2026 Problem Statements with the least number of submissions.
         </p>
+
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '0.5rem',
+          marginTop: '1.25rem',
+          padding: '0.4rem 0.85rem',
+          background: 'var(--bg-color)',
+          border: '2px solid var(--border-color)',
+          boxShadow: '3px 3px 0px var(--shadow-color)',
+          fontFamily: 'var(--font-mono)',
+          fontWeight: 700,
+          fontSize: '0.825rem',
+          letterSpacing: '0.04em',
+          textTransform: 'uppercase'
+        }}>
+          <span style={{ display: 'inline-block', width: '8px', height: '8px', borderRadius: '50%', background: '#22c55e' }} />
+          SUBMISSIONS CLOSED • FINAL ARCHIVED DATA (265 PS)
+        </div>
       </main>
 
       <section className="container" style={{ paddingBottom: '4rem' }}>
@@ -59,7 +78,7 @@ export function Home() {
             How it works
           </h2>
           <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', lineHeight: '1.7' }}>
-            NICHE scrapes the Azure WAF-protected SIH portal every 15 minutes to track live submission counts and detect newly added Problem Statements before anyone else notices them.
+            NICHE tracked the Azure WAF-protected SIH portal every 15 minutes throughout the registration phase, logging live submission counts and velocity. With the submission deadline now concluded, this portal serves as the permanent archive of final submission counts and competition intelligence across all 265 problem statements.
           </p>
         </div>
 

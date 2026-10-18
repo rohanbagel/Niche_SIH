@@ -19,7 +19,7 @@ export function PSVelocityChart({ timeline, currentCount = 0, firstSeenAt }) {
           NO TIMELINE RECORDED YET
         </div>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', opacity: 0.8, maxWidth: '420px', margin: '0 auto' }}>
-          This problem statement currently has {currentCount} submissions. The velocity tracker records each new submission increment detected during every 15-minute background cycle.
+          This problem statement finalized with {currentCount} submissions. No count increments were detected during the tracked window.
         </p>
       </div>
     );
@@ -36,7 +36,7 @@ export function PSVelocityChart({ timeline, currentCount = 0, firstSeenAt }) {
   const maxCount = Math.max(currentCount, ...points.map((p) => p.newCount ?? 0), 5);
   
   const startTime = new Date(points[0].timestamp).getTime();
-  const endTime = Math.max(Date.now(), new Date(points[points.length - 1].timestamp).getTime() + 3600000);
+  const endTime = new Date(points[points.length - 1].timestamp).getTime();
   const timeSpan = Math.max(86400000, endTime - startTime);
 
   const svgWidth = 680;
@@ -219,7 +219,7 @@ export function PSVelocityChart({ timeline, currentCount = 0, firstSeenAt }) {
                 fontFamily="var(--font-mono)" 
                 fontWeight="600"
               >
-                Today ({coords[coords.length - 1].newCount})
+                Final ({coords[coords.length - 1].newCount})
               </text>
             </>
           )}

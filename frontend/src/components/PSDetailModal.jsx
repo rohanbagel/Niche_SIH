@@ -94,9 +94,9 @@ export function PSDetailModal({ ps, isOpen, onClose }) {
           {/* Metadata Telemetry Grid */}
           <div className="ps-modal-grid">
             <div className="ps-modal-stat-box">
-              <div className="ps-modal-stat-label">TOTAL SUBMISSIONS</div>
+              <div className="ps-modal-stat-label">FINAL SUBMISSIONS</div>
               <div className="ps-modal-stat-value">{ps.ideasCount ?? 0}</div>
-              <div className="ps-modal-stat-sub">Competing Idea Submissions</div>
+              <div className="ps-modal-stat-sub">Competing Idea Submissions (Final)</div>
             </div>
 
             <div className="ps-modal-stat-box">

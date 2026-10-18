@@ -9,31 +9,36 @@ export function useFilterSort(data = [], { defaultSort = 'ideas-asc', defaultCap
   const [onlyNewDrops, setOnlyNewDrops] = useState(false);
   const [sortBy, setSortBy] = useState(defaultSort);
 
-  // Identify baseline seed timestamp (the initial dataset timestamp)
-  const baselineTimestamp = useMemo(() => {
-    if (!data.length) return 0;
+  // Identify baseline seed timestamp and latest drop timestamp
+  const { baselineTimestamp, latestTimestamp } = useMemo(() => {
+    if (!data.length) return { baselineTimestamp: 0, latestTimestamp: 0 };
     let earliest = Infinity;
+    let latest = 0;
     data.forEach((ps) => {
       if (ps.firstSeenAt) {
         const t = new Date(ps.firstSeenAt).getTime();
         if (t < earliest) earliest = t;
+        if (t > latest) latest = t;
       }
     });
-    return earliest === Infinity ? 0 : earliest;
+    return {
+      baselineTimestamp: earliest === Infinity ? 0 : earliest,
+      latestTimestamp: latest === 0 ? Date.now() : latest,
+    };
   }, [data]);
 
-  // Helper: check if a problem statement is a genuine newly added drop
+  // Helper: check if a problem statement was added in the final 48 hours of drops
   const isNewDrop = useMemo(() => {
     return (ps) => {
       if (!ps || !ps.firstSeenAt) return false;
       const t = new Date(ps.firstSeenAt).getTime();
       // Must be added after the initial database baseline (> 1 hour after seed)
       const isPostBaseline = baselineTimestamp > 0 && t > (baselineTimestamp + 3600000);
-      // And discovered within the last 48 hours
-      const isRecent = (Date.now() - t) <= (48 * 3600000);
+      // And discovered within 48 hours of the latest drops
+      const isRecent = (latestTimestamp - t) <= (48 * 3600000);
       return isPostBaseline && isRecent;
     };
-  }, [baselineTimestamp]);
+  }, [baselineTimestamp, latestTimestamp]);
 
   // Calculate count of newly dropped problem statements
   const newDropsCount = useMemo(() => {
