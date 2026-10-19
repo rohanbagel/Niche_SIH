@@ -28,7 +28,11 @@ export function usePSHistory(psNumber, currentIdeasCount = 0) {
         if (dbError) throw dbError;
 
         if (isMounted) {
-          setHistory(data || []);
+          // Filter out artificial portal closure reset events where new_count dropped to 0
+          const validRecords = (data || []).filter(
+            (r) => !(r.new_count === 0 && r.old_count > 0)
+          );
+          setHistory(validRecords);
         }
       } catch (err) {
         console.error(`Error fetching history for ${psNumber}:`, err);
