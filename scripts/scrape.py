@@ -216,7 +216,7 @@ def parse_ps_table(html_text: str) -> list[dict]:
 
 def load_previous_state(supabase: Client) -> list[dict]:
     """Fetch the current state from Supabase."""
-    print("   🌐 Fetching existing state from Supabase...")
+    print("   [INFO] Fetching existing state from Supabase...")
     try:
         response = supabase.table("problem_statements").select("ps_number, ideas_count, first_seen_at").execute()
         return response.data
