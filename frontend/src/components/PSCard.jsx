@@ -58,7 +58,7 @@ export function PSCard({ ps }) {
             minWidth: '100px'
           }}>
             <div style={{ fontSize: '1.6rem', fontWeight: 'bold', fontFamily: 'var(--font-mono)', lineHeight: 1 }}>{ps.ideasCount}</div>
-            <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontFamily: 'var(--font-display)', fontWeight: 600, letterSpacing: '0.05em', marginTop: '0.3rem' }}>Final Submissions</div>
+            <div style={{ fontSize: '0.72rem', textTransform: 'uppercase', fontFamily: 'var(--font-display)', fontWeight: 600, letterSpacing: '0.05em', marginTop: '0.3rem' }}>Total Submissions</div>
           </div>
         </div>
 

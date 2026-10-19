@@ -19,7 +19,7 @@ export function PSVelocityChart({ timeline, currentCount = 0, firstSeenAt }) {
           NO TIMELINE RECORDED YET
         </div>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '0.875rem', opacity: 0.8, maxWidth: '420px', margin: '0 auto' }}>
-          This problem statement finalized with {currentCount} submissions. No count increments were detected during the tracked window.
+          This problem statement currently has {currentCount} total submissions. No count increments were detected during the tracked window.
         </p>
       </div>
     );
@@ -219,7 +219,7 @@ export function PSVelocityChart({ timeline, currentCount = 0, firstSeenAt }) {
                 fontFamily="var(--font-mono)" 
                 fontWeight="600"
               >
-                Final ({coords[coords.length - 1].newCount})
+                Total ({coords[coords.length - 1].newCount})
               </text>
             </>
           )}

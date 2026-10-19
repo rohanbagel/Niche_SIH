@@ -584,7 +584,7 @@ export function Track() {
             <div className="brutalist-container brutalist-shadow" style={{ padding: '1.25rem', background: 'var(--bg-color)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                 <span style={{ fontFamily: 'var(--font-display)', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em', textTransform: 'uppercase', opacity: 0.75 }}>
-                  FINAL SUBMISSIONS
+                  TOTAL SUBMISSIONS
                 </span>
                 <Clock size={20} />
               </div>
@@ -592,7 +592,7 @@ export function Track() {
                 {activePs.ideasCount} <span style={{ fontSize: '0.9rem', fontFamily: 'var(--font-mono)', opacity: 0.6 }}>/ {activePs.maxIdeas || 100}</span>
               </div>
               <div style={{ fontFamily: 'var(--font-body)', fontSize: '0.825rem', opacity: 0.85 }}>
-                {Math.round(((activePs.ideasCount || 0) / (activePs.maxIdeas || 100)) * 100)}% capacity filled at deadline
+                {Math.round(((activePs.ideasCount || 0) / (activePs.maxIdeas || 100)) * 100)}% capacity filled
               </div>
             </div>
           </div>

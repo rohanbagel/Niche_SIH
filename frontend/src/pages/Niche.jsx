@@ -53,7 +53,7 @@ export function Niche() {
           NICHE PS
         </h1>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: '1.05rem', marginTop: '0.5rem', opacity: 0.85 }}>
-          Sorted by lowest competition first. Definitive final standings of problem statements with the least submissions.
+          Sorted by lowest competition first. Definitive standings of problem statements with the least total submissions.
         </p>
       </div>
 
